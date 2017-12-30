@@ -17,6 +17,9 @@ Plugin 'jstemmer/gotags'
 Plugin 'vim-scripts/Conque-GDB'
 Plugin 'derekparker/delve'
 
+
+Plugin 'rizzatti/dash.vim'
+
 """"""""""""""""""""""""""""""""""""
 Plugin 'majutsushi/tagbar'
 Plugin 'scrooloose/nerdtree'
@@ -25,11 +28,10 @@ Plugin 'scrooloose/nerdtree'
 "sublime 配色方案
 Plugin 'tomasr/molokai'
 
-Plugin 'tmhedberg/SimpylFold'
+Plugin 'tmhedberg/SimpylFold' "代码折叠
 Plugin 'Valloric/YouCompleteme'
-Plugin 'Raimondi/delimitMate'
+" Plugin 'Raimondi/delimitMate' "自动补全 ( { 等
 Plugin 'scrooloose/nerdcommenter'
-
 " Plugin 'vim-airline/vim-airline'
 " Plugin 'vim-airline/vim-airline-themes'
 Plugin 'fholgado/minibufexpl.vim'
@@ -42,8 +44,6 @@ Plugin 'fholgado/minibufexpl.vim'
 " Plugin 'tpope/vim-repeat'
 " Plugin 'tpope/vim-rails'
 " Plugin 'mhinz/vim-startify'
-" Plugin 'fatih/vim-go'
-" Plugin 'bling/vim-airline'
 " Plugin 'Keithbsmiley/swift.vim'
 "Plugin 'kballard/vim-swift'
 " Plugin 'junegunn/vim-easy-align'
@@ -115,6 +115,18 @@ let do_syntax_sel_menu=1
 set updatetime=200
 set history=1000
 
+set statusline=%F       "tail of the filename
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+set statusline+=%y      "filetype
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+
 " 搜索
 set hlsearch
 set incsearch " 搜索忽略大小写
@@ -130,6 +142,7 @@ set tags=tags
 set tags+=./tags "add current directory's generated tags file
 set tags+=/usr/local/include/c++/tags
 
+set path+=.,/usr/include,/usr/include/c++/4.2.1
 
 set foldmethod=indent
 au BufWinLeave * silent mkview
@@ -145,6 +158,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 autocmd VimEnter * NERDTree
 wincmd w
 autocmd VimEnter * wincmd w
+
+"cmap test NERDTreeToggle
 
 let g:NERDTreeWinSize = 31
 
@@ -185,3 +200,8 @@ let g:go_disable_autoinstall = 1
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
+au FileType cpp,c nnoremap <F5>   <Esc>:w<CR>:!g++ -std=c++11 % -o /tmp/a.out && /tmp/a.out<CR>
+au FileType cpp,c nnoremap <F7>   <Esc>:w<CR>:!g++ -std=c++11 %<CR>
+au FileType cpp,c nnoremap <C-F5> <Esc>:w<CR>:!g++ -std=c++11 -g % -o /tmp/a.out && gdb /tmp/a.out<CR>
+
+
